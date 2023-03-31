@@ -1,0 +1,47 @@
+html,
+body {
+  margin: 0;
+  height: 100%;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+}
+
+header { 
+  height: 200px;
+  width: 100%;
+  position: relative;
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
+  display: grid;
+  justify-items: center;
+}
+
+main {
+  height: 100%;
+  background: rgb(240, 238, 238);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#board {
+  display: grid;
+  height:500px;
+  width: 500px;
+  grid-template-columns: repeat(3, 1fr);
+  border: 1px solid gray;
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
+}
+
+#board > div {
+  height: 100%;
+  width: 100%;
+  display: inline-block;
+  border: 1px solid gray;
+}
+
+#board > div:hover {
+  backdrop-filter: brightness(80%);
+}
