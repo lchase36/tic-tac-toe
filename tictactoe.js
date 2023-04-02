@@ -1,14 +1,14 @@
 /* eslint-disable no-plusplus */
 // Module stores the board
 const gameBoard = (function tictactoeGameBoard() {
-  const board = new Array(9);
+  const board = new Array(9).fill(null);
 
   const getBoard = function returnBoard() {
     return board;
   };
 
   const clear = function clearBoard() {
-    board.fill();
+    board.fill(null);
   };
 
   const markCell = function markSelectedCell(position, mark) {
@@ -44,7 +44,7 @@ const gameLogic = (function tictactoeGameLogic() {
   const player1 = playerFactory(nameP1, markP1);
   const player2 = playerFactory(nameP2, markP2);
   let activePlayer = player1;
-  let victor;
+  let result;
 
   const getCurrentPlayer = function getActivePlayer() {
     return activePlayer;
@@ -106,16 +106,24 @@ const gameLogic = (function tictactoeGameLogic() {
       // eslint-disable-next-line no-param-reassign
       cell.textContent = "";
     });
-    victor = null;
+    result = null;
+    activePlayer = player1;
     gameBoard.clear();
+  };
+
+  const checkDraw = function checkBoardForDraw(board) {
+    const draw = board.every((cell) => cell !== null);
+    console.log(`draw ${draw} ${board}`);
+    result = draw ? "draw" : null;
   };
 
   const checkWinner = function checkBoardForWinningCombo() {
     const boardState = gameBoard.getBoard();
     if (checkRow(boardState) || checkCol(boardState) || checkDiag(boardState)) {
-      victor = activePlayer.getName();
-      console.log(victor);
-      reset();
+      result = activePlayer.getName();
+      console.log(result);
+    } else {
+      checkDraw(boardState);
     }
   };
 
@@ -125,19 +133,28 @@ const gameLogic = (function tictactoeGameLogic() {
   });
 
   const setCell = function setCellToPlayerMark(position) {
-    const mark = activePlayer.getMarker();
-    cells[position].textContent = mark;
-    gameBoard.markCell(position, mark);
-    checkWinner();
-    console.log(`active: ${activePlayer.getName()} \nvictor: ${victor}`);
-    swapCurrentPlayer();
+    if (!cells[position].textContent) {
+      const mark = activePlayer.getMarker();
+      cells[position].textContent = mark;
+      gameBoard.markCell(position, mark);
+      checkWinner();
+      if (result) {
+        console.log(result);
+        reset();
+      } else {
+        swapCurrentPlayer();
+      }
+    }
   };
 
-  // bind action to cell marking
-  for (let i = 0; i < cells.length; i++) {
-    const boundMarkcell = setCell.bind(cells[i], i);
-    cells[i].addEventListener("click", boundMarkcell, { once: true });
-  }
+  const addButtonEvents = function addMarkEventToButtons() {
+    for (let i = 0; i < cells.length; i++) {
+      const boundMarkcell = setCell.bind(cells[i], i);
+      cells[i].addEventListener("click", boundMarkcell);
+    }
+  };
+
+  addButtonEvents();
 
   return { getCurrentPlayer, swapCurrentPlayer, checkWinner };
 })();
