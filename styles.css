@@ -27,21 +27,20 @@ main {
 }
 
 #board {
+  box-sizing: border-box;
   display: grid;
-  height:500px;
-  width: 500px;
   grid-template-columns: repeat(3, 1fr);
   border: 1px solid gray;
   box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
 }
 
-#board > div {
-  height: 100%;
-  width: 100%;
-  display: inline-block;
+#board > button {
+  height: 165px;
+  width: 165px;
   border: 1px solid gray;
+  font-size: 60px;
 }
 
-#board > div:hover {
+#board > button:hover {
   backdrop-filter: brightness(80%);
 }
