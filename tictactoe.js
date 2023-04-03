@@ -171,5 +171,10 @@ const gameLogic = (function tictactoeGameLogic() {
 
   nameInputs.forEach((input) => {
     input.addEventListener("change", changeName);
+    input.addEventListener("keypress", (e) => {
+      if (e.keyCode === 13) {
+        e.preventDefault();
+      }
+    });
   });
 })();
