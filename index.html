@@ -9,22 +9,21 @@
 </head>
 <body>
   <header>
-    <div id="mark-p1">X</div>
     <h1>TIC TAC TOE</h1>
-    <div>
+    <div id="input-container">
       <form>
         <input id="name-p1"
                name="name-p1" 
                type="text" 
                title="Please enter player 1 name." 
-               placeholder="Player 1">
+               placeholder="Player 1 (X)">
       </form>
       <form>
         <input id="name-p2"
                name="name-p2" 
                type="text" 
                title="Please enter player 2 name." 
-               placeholder="Player 2">
+               placeholder="Player 2 (O)">
       </form>
     </div>
   </header>
@@ -39,6 +38,12 @@
       <button type="button"></button>
       <button type="button"></button>
       <button type="button"></button>
+    </div>
+    <div id="result-modal" class="hidden">
+      <div id="result-text-container">
+        <h1></h1>
+        <button id="reset" type="button">PLAY AGAIN</button>
+      </div>
     </div>
   </main>
 </body>

@@ -7,10 +7,16 @@ body {
 body {
   display: flex;
   flex-direction: column;
+  font-family: system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+}
+
+.hidden {
+  display: none;
 }
 
 header { 
   height: 200px;
+  padding-top: 20px;
   width: 100%;
   position: relative;
   box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
@@ -18,9 +24,26 @@ header {
   justify-items: center;
 }
 
+header > h1 {
+  font-size: 48px;
+  margin: 0;
+}
+
+#input-container {
+  display: flex;
+  gap: 30px;
+}
+
+input[type=text] {
+  border-radius: 4px;
+  font-size: 20px;
+  width: 225px;
+  box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
+}
+
 main {
-  height: 100%;
-  background: rgb(240, 238, 238);
+  height: max(100%, 550px);
+  background: rgb(223, 237, 242);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -30,17 +53,63 @@ main {
   box-sizing: border-box;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  border: 1px solid gray;
+  border: 4px solid white;
+  border-radius: 8px;
   box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
 }
 
 #board > button {
   height: 165px;
   width: 165px;
-  border: 1px solid gray;
+  border: 1px solid white;
+  background: #ff8a69;
   font-size: 60px;
+  color: white;
 }
 
 #board > button:hover {
-  backdrop-filter: brightness(80%);
+  filter: brightness(120%);
+  cursor: pointer;
+}
+
+#result-modal {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  height: 100%;
+  width: 100%;
+  z-index: 1;
+  backdrop-filter: brightness(20%);
+}
+
+#result-text-container {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  align-items: center;
+  justify-content: center;
+}
+
+#result-text-container h1 {
+  color: white;
+  font-size: 48px;
+  text-align: center;
+}
+
+#reset {
+  height: 50px;
+  width: 220px;
+  font-weight: bold;
+  color: white;
+  font-size: 32px;
+  background: none;
+  border: 1px solid white;
+  border-radius: 8px;
+}
+
+#reset:hover {
+  border: 2px solid white;
+  cursor: pointer;
 }

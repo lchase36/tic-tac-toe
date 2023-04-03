@@ -18,36 +18,56 @@ const gameBoard = (function tictactoeGameBoard() {
   return { getBoard, clear, markCell };
 })();
 
-const playerFactory = (name, symbol) => {
+const playerFactory = (designation, symbol) => {
   let marker = symbol;
-  let score = 0;
+  let name = designation;
   const getName = () => name;
+  const setName = (newName) => {
+    name = newName;
+  };
   const getMarker = () => marker;
   const setMarker = (newMarker) => {
     marker = newMarker;
   };
-  const getScore = () => score;
-  const increaseScore = function incrementPlayerScore() {
-    score += 1;
-  };
-  return { getName, getMarker, setMarker, getScore, increaseScore };
+  return { getName, setName, getMarker, setMarker };
 };
 
 // eslint-disable-next-line no-unused-vars
 const gameLogic = (function tictactoeGameLogic() {
   const nameP1 = "Player 1";
   const nameP2 = "Player 2";
-  const markP1 = document.querySelector("#mark-p1").textContent || "X";
-  const markP2 = markP1 === "X" ? "O" : "X";
-  const cells = document.querySelectorAll("#board > button");
-
+  const markP1 = "X";
+  const markP2 = "O";
   const player1 = playerFactory(nameP1, markP1);
   const player2 = playerFactory(nameP2, markP2);
+  const nameInputs = document.querySelectorAll("form input");
   let activePlayer = player1;
-  let result;
 
-  const getCurrentPlayer = function getActivePlayer() {
-    return activePlayer;
+  const cells = document.querySelectorAll("#board > button");
+
+  let result;
+  const modal = document.querySelector("#result-modal");
+  const resultText = document.querySelector("#result-text-container > h1");
+  const resetButton = document.querySelector("#reset");
+
+  const changeName = function changePlayerName() {
+    if (this.id === "name-p1") {
+      player1.setName(this.value || "Player 1");
+    } else {
+      player2.setName(this.value || "Player 2");
+    }
+  };
+
+  const reset = function resetGame() {
+    cells.forEach((cell) => {
+      // eslint-disable-next-line no-param-reassign
+      cell.textContent = "";
+    });
+    result = null;
+    activePlayer = player1;
+    gameBoard.clear();
+    resultText.textContent = "";
+    modal.classList.toggle("hidden");
   };
 
   const swapCurrentPlayer = function setActivePlayer() {
@@ -101,27 +121,23 @@ const gameLogic = (function tictactoeGameLogic() {
     return win;
   };
 
-  const reset = function resetGame() {
-    cells.forEach((cell) => {
-      // eslint-disable-next-line no-param-reassign
-      cell.textContent = "";
-    });
-    result = null;
-    activePlayer = player1;
-    gameBoard.clear();
+  const displayVictor = function displayVictoryOverlay(victor) {
+    result = victor;
+    resultText.textContent = result;
+    modal.classList.toggle("hidden");
   };
 
   const checkDraw = function checkBoardForDraw(board) {
-    const draw = board.every((cell) => cell !== null);
-    console.log(`draw ${draw} ${board}`);
-    result = draw ? "draw" : null;
+    if (board.every((cell) => cell !== null)) {
+      displayVictor("Tie Game");
+    }
   };
 
   const checkWinner = function checkBoardForWinningCombo() {
     const boardState = gameBoard.getBoard();
     if (checkRow(boardState) || checkCol(boardState) || checkDiag(boardState)) {
-      result = activePlayer.getName();
-      console.log(result);
+      const victoryText = `${activePlayer.getName()} Wins!`;
+      displayVictor(victoryText);
     } else {
       checkDraw(boardState);
     }
@@ -138,23 +154,22 @@ const gameLogic = (function tictactoeGameLogic() {
       cells[position].textContent = mark;
       gameBoard.markCell(position, mark);
       checkWinner();
-      if (result) {
-        console.log(result);
-        reset();
-      } else {
-        swapCurrentPlayer();
-      }
+      swapCurrentPlayer();
     }
   };
 
-  const addButtonEvents = function addMarkEventToButtons() {
+  const addCellEvents = function addMarkEventToCellButtons() {
     for (let i = 0; i < cells.length; i++) {
       const boundMarkcell = setCell.bind(cells[i], i);
       cells[i].addEventListener("click", boundMarkcell);
     }
   };
 
-  addButtonEvents();
+  addCellEvents();
 
-  return { getCurrentPlayer, swapCurrentPlayer, checkWinner };
+  resetButton.addEventListener("click", reset);
+
+  nameInputs.forEach((input) => {
+    input.addEventListener("change", changeName);
+  });
 })();
